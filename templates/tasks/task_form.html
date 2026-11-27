@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Редактирование задачи{% else %}Создание задачи{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% if object %}Редактирование задачи{% else %}Создание задачи{% endif %}</h1>
+
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn">Сохранить</button>
+            <a href="{% if object %}{% url 'tasks:detail' object.pk %}{% else %}{% url 'tasks:list' %}{% endif %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
